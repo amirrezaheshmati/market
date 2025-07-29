@@ -20,10 +20,10 @@ class Comments(models.Model) :
         return f"{self.text[:50]}..."
 
 class Replay(models.Model) :
-    comment = models.ForeignKey(Comments , on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comments , on_delete=models.CASCADE , related_name="replay")
     text = models.TextField()
-    likes = models.IntegerField(default=0)
-    date_added = models.DateTimeField(auto_now_add=True)
+    likes = models.IntegerField(default=0 )
+    date_added = models.DateTimeField(auto_now_add=True )
     
     def __str__(self):
         return f"{self.text[:50]}..."

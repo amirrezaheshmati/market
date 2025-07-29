@@ -1,11 +1,16 @@
 {% extends "shopping/base.html" %}
 {% block content %}
 <p>{{product.name}}:</p>
+<p><a href="{% url 'shopping:add_comment' product.id %}">Add comment</a></p>
 <ul>
     {% for com in comments %}
     <li>
         <p>{{com.text}}</p>
         <p>{{com.likes}}</p>
+        {% for rep in com.replay.all %}
+        <p>reply : {{rep.text}}</p>
+        <p>likes : {{rep.likes}}</p>
+        {% endfor %}
     </li>
     {% empty %}
     <li>nothing</li>
