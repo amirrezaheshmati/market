@@ -1,0 +1,14 @@
+{% extends "shopping/base.html" %}
+{% block content %}
+<p>{{product.name}}:</p>
+<ul>
+    {% for com in comments %}
+    <li>
+        <p>{{com.text}}</p>
+        <p>{{com.likes}}</p>
+    </li>
+    {% empty %}
+    <li>nothing</li>
+    {% endfor %}
+</ul>
+{% endblock content %}
