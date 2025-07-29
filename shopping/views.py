@@ -1,5 +1,5 @@
 from django.shortcuts import render , redirect
-from .form import CommentAdded
+from .form import CommentAdded , ReplayAdded
 
 from .models import Product , Comments
 # Create your views here.
@@ -28,3 +28,19 @@ def add_comment(request , product_id) :
     
     context = {"form" : form , "product" : product}
     return render(request , "shopping/add_comment.html" , context)
+
+def add_replay(request , comment_id , product_id) :
+    product = Product.objects.get(id = product_id)
+    comment = Comments.objects.get(id = comment_id)
+    if request.method != "POST" :
+        form = ReplayAdded()
+    else :
+        form = ReplayAdded(data=request.POST)
+        if form.is_valid() :
+            new_replay = form.save(commit=False)
+            new_replay.comment = comment
+            new_replay.save()
+            return redirect("shopping:comments" ,product_id = product_id )
+    
+    context = {"form" : form , "comment" : comment , "product" : product}
+    return render(request , "shopping/add_replay.html" , context)

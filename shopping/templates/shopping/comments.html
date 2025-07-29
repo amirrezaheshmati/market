@@ -5,7 +5,7 @@
 <ul>
     {% for com in comments %}
     <li>
-        <p>{{com.text}}</p>
+        <p>{{com.text}} - <a href="{% url 'shopping:add_replay' product.id com.id %}">Replay</a></p>
         <p>{{com.likes}}</p>
         {% for rep in com.replay.all %}
         <p>reply : {{rep.text}}</p>
