@@ -44,3 +44,6 @@ def add_replay(request , comment_id , product_id) :
     
     context = {"form" : form , "comment" : comment , "product" : product}
     return render(request , "shopping/add_replay.html" , context)
+
+def buy_page(request) :
+    return render(request , "shopping/buy_page.html")
