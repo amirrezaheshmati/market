@@ -1,5 +1,11 @@
 from  django import forms
-from .models import Comments , Replay
+from .models import Comments , Replay , Product
+
+class AddToBuyPage(forms.ModelForm) :
+    class Meta :
+        model = Product
+        fields = ["count"]
+        labels = {"count" : "count"}
 
 class CommentAdded(forms.ModelForm) :
     class Meta :

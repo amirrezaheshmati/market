@@ -1,0 +1,11 @@
+{% extends "shopping/base.html" %}
+{% block content %}
+<img src="{{product.picture.url}}" alt="img" style="width: 10rem;">
+<p>name : {{product.name}}</p>
+<p>price : {{product.price}}</p>
+<form action="{% url 'shopping:product_describe' product.id %}" method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button name="submit">Add</button>
+</form>
+{% endblock content %}

@@ -1,5 +1,6 @@
 from django.shortcuts import render , redirect
-from .form import CommentAdded , ReplayAdded
+from django.db.models import Q
+from .form import CommentAdded , ReplayAdded , AddToBuyPage
 
 from .models import Product , Comments
 # Create your views here.
@@ -45,5 +46,23 @@ def add_replay(request , comment_id , product_id) :
     context = {"form" : form , "comment" : comment , "product" : product}
     return render(request , "shopping/add_replay.html" , context)
 
+def product_describe(request , product_id) :
+    product = Product.objects.get(id = product_id)
+    if request.method != "POST" :
+        form = AddToBuyPage(instance=product)
+    else :
+        form = AddToBuyPage(instance=product, data=request.POST)
+        if form.is_valid() :
+            form.save()
+            return redirect("shopping:buy_page")
+
+    context = {"form" : form , "product" : product}
+    return render(request , "shopping/product_describe.html" , context)
+
 def buy_page(request) :
     return render(request , "shopping/buy_page.html")
+
+def buy_list(request) :
+    product = Product.objects.order_by("name").filter(~Q(count =  "0"))
+    context = {"product" : product}
+    return render(request , "shopping/buy_list.html" , context)
