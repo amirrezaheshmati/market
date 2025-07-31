@@ -1,12 +1,13 @@
 {% extends "shopping/base.html" %}
 {% block content %}
 <ul>
-    {% for pro in product %}
+    {% for ord in order %}
     <li>
-        <img src="{{pro.picture.url}}" alt="img" style="width: 10rem;">
-        <p>{{pro.name}}</p>
-        <p>{{pro.price}}</p>
-        <p>{{pro.count}}</p>
+        <img src="{{ord.product.picture.url}}" alt="img" style="width: 10rem;">
+        <p>{{ord.product.name}}</p>
+        <p>{{ord.product.price}}</p>
+        <p>{{ord.count}}</p>
+        <p><a href="{% url 'shopping:product_describe' ord.product.id %}">descibe and Buy</a></p>
     </li>
     {% empty %}
     <p>nothing</p>

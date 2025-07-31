@@ -2,7 +2,7 @@ from django.shortcuts import render , redirect
 from django.db.models import Q
 from .form import CommentAdded , ReplayAdded , AddToBuyPage
 
-from .models import Product , Comments
+from .models import Product , Comments , Order
 # Create your views here.
 def index(request) :
     product = Product.objects.order_by("likes")
@@ -48,10 +48,16 @@ def add_replay(request , comment_id , product_id) :
 
 def product_describe(request , product_id) :
     product = Product.objects.get(id = product_id)
+    try :
+        order = Order.objects.get(user = request.user,
+                                  product = product)
+    except Order.DoesNotExist :
+        order = Order(user = request.user , 
+                      product = product)
     if request.method != "POST" :
-        form = AddToBuyPage(instance=product)
+        form = AddToBuyPage(instance=order)
     else :
-        form = AddToBuyPage(instance=product, data=request.POST)
+        form = AddToBuyPage(instance=order, data=request.POST)
         if form.is_valid() :
             form.save()
             return redirect("shopping:buy_page")
@@ -63,6 +69,6 @@ def buy_page(request) :
     return render(request , "shopping/buy_page.html")
 
 def buy_list(request) :
-    product = Product.objects.order_by("name").filter(~Q(count =  "0"))
-    context = {"product" : product}
+    order = Order.objects.filter(user = request.user ,count__gt = 0)
+    context = {"order" : order}
     return render(request , "shopping/buy_list.html" , context)
