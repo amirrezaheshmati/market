@@ -33,6 +33,7 @@ MEDIA_ROOT = BASE_DIR / "madia"
 
 INSTALLED_APPS = [
     "shopping",
+    "users",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
