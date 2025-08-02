@@ -1,0 +1,16 @@
+{% extends "shopping/base.html" %}
+{% block content %}
+<ul>
+    {% for pro in order %}
+    <li>
+        <img src="{{pro.product.picture.url}}" alt="img">
+        <p>{{pro.product.name}}</p>
+        <p>{{pro.product.price}}</p>
+        <p>{{pro.count}}</p>
+        <p>{{pro.recieve_code}}</p>
+    </li>
+    {% empty %}
+    <p>nothing</p>
+    {% endfor %}
+</ul>
+{% endblock content %}

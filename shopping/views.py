@@ -96,5 +96,6 @@ def buy_action(request) :
     return render(request , "shopping/buy_action.html" , context)
 
 def buy_history(request) :
-    order = Order.objects.filter(user = request.user , level = 3)
+    order = Order.objects.filter(user = request.user , level3 = True)
     context = {"order" : order}
+    return render(request , "shopping/buy_history.html" , context)
