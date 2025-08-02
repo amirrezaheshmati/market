@@ -1,0 +1,34 @@
+{% extends "shopping/base.html" %}
+{% block content %}
+<ul>
+    {% for pro in order %}
+    <li>
+        <img src="{{ pro.product.picture.url }}" alt="img" style="width: 10rem;">
+        <p>{{pro.date_added}}</p>
+        <p>{{pro.product.name}}</p>
+        <p>{{pro.product.price}}</p>
+        <p>{{pro.count}}</p>
+        <p>{{pro.recieve_code}}</p>
+        {% for ac in acount %}
+        {% if ac.user == pro.user %}
+        <p>{{ac.name}}</p>
+        <p>{{ac.number_phone1}}</p>
+        <p>{{ac.number_phone2}}</p>
+        <p>{{ac.post_code}}</p>
+        <p>{{ac.addres}}</p>
+        {% endif %}
+        {% endfor %}
+        <p>{{pro.shows}}</p>
+        {% if pro.shows != 3 %}
+        <p><a href="{% url 'shopping:delete' pro.id %}">Delete</a></p>
+        {% elif not pro.level3 %}
+        <p>Sended</p>
+        {% else %}
+        <p>Recieved</p>
+        {% endif %}
+    </li>
+    {% empty %}
+    <p>nothing</p>
+    {% endfor %}
+</ul>
+{% endblock content %}

@@ -1,5 +1,5 @@
 from  django import forms
-from .models import Comments , Replay , Order
+from .models import Comments , Replay , Order , Product
 
 class AddToBuyPage(forms.ModelForm) :
     class Meta :
@@ -18,3 +18,9 @@ class ReplayAdded(forms.ModelForm) :
         model = Replay
         fields = ["text"]
         labels = {"text" : "Replay"}
+        
+class AddProduct(forms.ModelForm) :
+    class Meta :
+        model = Product
+        fields = ["name" , "picture" , "price"]
+        labels = {"name" : "name" , "picture" : "picture" , "price" : "price"}

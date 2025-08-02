@@ -8,6 +8,13 @@
         <p>{{ord.product.price}}</p>
         <p>{{ord.count_history}}</p>
         <p>{{ord.recieve_code}}</p>
+        {% if ord.shows == 3 %}
+        <p><a href="{% url 'shopping:delete_user' ord.id %}">Delete</a></p>
+        {% elif not ord.level3 %}
+        <p>creating</p>
+        {% else %}
+        <p>Recieved</p>
+        {% endif %}
     </li>
     {% empty %}
     <p>nothing</p>

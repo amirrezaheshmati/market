@@ -3,10 +3,11 @@
 <ul>
     {% for pro in order %}
     <li>
-        <img src="{{pro.product.picture.url}}" alt="img">
+        <img src="{{pro.product.picture.url}}" alt="img" style="width: 10rem;">
+        <p>{{pro.date_deleted}}</p>
         <p>{{pro.product.name}}</p>
         <p>{{pro.product.price}}</p>
-        <p>{{pro.count}}</p>
+        <p>{{pro.count_history}}</p>
         <p>{{pro.recieve_code}}</p>
     </li>
     {% empty %}

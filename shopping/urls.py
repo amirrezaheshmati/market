@@ -13,6 +13,12 @@ urlpatterns = [
     path("product_describe/<int:product_id>/" , views.product_describe , name="product_describe"),
     path("buy_list/" , views.buy_list , name="buy_list") ,
     path("buy_action/", views.buy_action , name="buy_action"),
+    path("delete_user/<int:product_id>/" , views.delete_user , name="delete_user"),
     path("buy_history/" , views.buy_history , name="buy_history"),
     path("buy_history/" , views.buy_history , name="buy_history"),
+    path("admin_panel/" , views.admin_panel , name="admin_panel"),
+    path("admin_action/" , views.admin_action , name="admin_action"),
+    path("admin_action/<int:product_id>/" , views.delete_admin_product , name="delete"),
+    path("admin_history/" , views.admin_history , name="admin_history"), 
+    path("like_post/<int:post_id>/" , views.like_post , name="like_post"),
 ]

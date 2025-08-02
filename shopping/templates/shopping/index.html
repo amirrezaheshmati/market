@@ -2,7 +2,13 @@
 {% block content %}
 <p>wellcome</p>
 <p>
-<a href="{% url 'shopping:buy_page' %}">Buy page</a> - 
+<a href="{% url 'shopping:buy_page' %}">Buy page</a></p>
+<p>
 <a href="{% url 'shopping:product_list' %}">Products</a>
 </p>
+{% if user.is_superuser and user.is_authenticated %}
+<p>
+    <a href="{% url 'shopping:admin_panel' %}">Admin Panel</a>
+</p>
+{% endif %}
 {% endblock content %}

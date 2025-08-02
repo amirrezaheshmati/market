@@ -1,8 +1,11 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render ,get_object_or_404, redirect
 from django.db.models import Q
-from .form import CommentAdded , ReplayAdded , AddToBuyPage
-from .models import Product , Comments , Order
+from .form import CommentAdded , ReplayAdded , AddToBuyPage , AddProduct
+from .models import Product , Comments , Order 
 from random import choice
+import jdatetime
+from users.models import Acount
+from django.contrib.auth.decorators import user_passes_test
 # Create your views here.
 def index(request) :
     return render(request , "shopping/index.html")
@@ -91,11 +94,69 @@ def buy_action(request) :
     for pro in order :
         if pro.recieve_code == 0 :
             pro.recieve_code = revieve_code
+            pro.date_added = f"{jdatetime.datetime.now().strftime("%Y/%m/%d : %H")}"
+            pro.shows = 1
             pro.save()
     context = {"order" : order}
     return render(request , "shopping/buy_action.html" , context)
 
+def delete_user(request , product_id) :
+    order = Order.objects.get(id = product_id)
+    if request.method != "POST" :
+        order.level2 = False
+        order.level3 = True
+        order.shows = 3
+        order.date_deleted= f"{jdatetime.datetime.now().strftime("%Y/%m/%d : %H")}"
+        order.save()
+        return redirect("shopping:buy_page")
+
 def buy_history(request) :
-    order = Order.objects.filter(user = request.user , level3 = True)
+    order = Order.objects.order_by("-date_deleted").filter(user = request.user , level3 = True)
     context = {"order" : order}
     return render(request , "shopping/buy_history.html" , context)
+
+def is_admin(user) :
+    return user.is_superuser
+
+@user_passes_test(is_admin)
+def admin_panel(request) :
+    if request.method != "POST" :
+        form = AddProduct()
+    else :
+        form = AddProduct(request.POST , request.FILES)
+        if form.is_valid() :
+            form.save()
+            return redirect("shopping:product_list")
+
+    context = {"form" : form}
+    return render(request , "shopping/admin_panel.html" , context)
+    
+def admin_action(request) :
+    acount = Acount.objects.all()
+    order = Order.objects.order_by( "shows","-date_added").filter(level2 = True)
+    context = {"order" : order , "acount" : acount}
+    return render(request , "shopping/admin_action.html" , context)
+
+def admin_history(request) :
+    acount = Acount.objects.all()
+    order = Order.objects.order_by("-date_deleted").filter(level3 = True)
+    context = {"acount" : acount , "order" : order}
+    return render(request , "shopping/admin_history.html" , context)
+
+def delete_admin_product(request , product_id) :
+    order = Order.objects.get(id = product_id)
+    if request.method != "POST" :
+        order.level3 = False
+        order.level2 = True
+        order.shows = 3
+        order.save()
+    return render(request , "shopping/index.html")
+
+def like_post(request, post_id) :
+    like = get_object_or_404(Product , id = post_id)
+    if request.user in like.likes.all() :
+        like.likes.remove(request.user)
+    else :
+        like.likes.add(request.user)
+        
+    return redirect("shopping:product_list")

@@ -5,7 +5,7 @@ class Product(models.Model) :
     name = models.CharField(max_length=20)
     price = models.BigIntegerField()
     picture = models.ImageField()
-    likes = models.IntegerField(default=0)
+    likes = models.ManyToManyField(User , blank=True , related_name="like")
     
     def __str__(self):
         return self.name
@@ -20,7 +20,10 @@ class Order(models.Model) :
     level1 = models.BooleanField(default=False)
     level2 = models.BooleanField(default=False)
     level3 = models.BooleanField(default=False)
-
+    shows = models.SmallIntegerField(default=0)
+    date_added = models.CharField()
+    date_deleted = models.CharField()
+    
 class Comments(models.Model) :
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     text = models.TextField()

@@ -1,0 +1,10 @@
+{% extends "shopping/base.html" %}
+{% block content %}
+<form action="{% url 'shopping:admin_panel' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name="submit">Add Product</button>
+</form>
+<p><a href="{% url 'shopping:admin_action' %}">Admin Action</a></p>
+<p><a href="{% url 'shopping:admin_history' %}">Admin History</a></p>
+{% endblock content %}
