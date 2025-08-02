@@ -1,0 +1,24 @@
+{% extends "shopping/base.html" %}
+{% block content %}
+<p>
+    wellcome
+</p>
+<ul>
+    {% for pro in product %}
+    <li>
+        <img src="{{pro.picture.url}}" alt="img" , style="width: 10rem;">
+        <p>{{pro.name}}</p>
+        <p>{{pro.price}}</p>
+        <p>{{pro.likes}}</p>
+        <p><a href="{% url 'shopping:comments' pro.id %}">comments</a></p>
+        {% if user.is_authenticated %}
+        <p><a href="{% url 'shopping:product_describe' pro.id %}">descibe and Buy</a></p>
+        {% else %}
+        <p><a href="{% url 'users:login' %}">descibe and Buy</a></p>
+        {% endif %}
+    </li>
+    {% empty %}
+    <li>nothing</li>
+    {% endfor %}
+</ul>
+{% endblock content %}

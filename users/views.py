@@ -2,6 +2,7 @@ from django.shortcuts import render , redirect
 from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from .form import Profill
+from .models import Acount
 # Create your views here.
 def register(request) :
     if request.method != "POST" :
@@ -16,14 +17,18 @@ def register(request) :
     context ={"form" : form}
     return render(request ,"registration/register.html" , context)
 
-def fill_profill(request) :
+def fill_profill(request , totall_price) :
+    try :
+        acount = Acount.objects.get(user = request.user)
+    except Acount.DoesNotExist :
+        acount = Acount(user = request.user)
     if request.method != "POST" :
-        form = Profill()
+        form = Profill(instance=acount)
     else :
-        form = Profill(data=request.POST)
+        form = Profill(instance=acount , data=request.POST)
         if form.is_valid() :
             form.save()
-            return redirect("shopping:index")
+            return redirect(f"https://zarinp.al/python_developer?amount={totall_price}")
     
-    context = {"form" : form}
+    context = {"form" : form , "totall_price" : totall_price}
     return render(request , "registration/profill.html" , context)

@@ -5,5 +5,5 @@ app_name = "users"
 urlpatterns  = [
     path("" , include("django.contrib.auth.urls")) ,
     path("register/" , views.register , name="register"),
-    path("informations/" , views.fill_profill , name="profill")
+    path("informations/<int:totall_price>/" , views.fill_profill , name="profill")
 ]

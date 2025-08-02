@@ -1,14 +1,16 @@
 from django.shortcuts import render , redirect
 from django.db.models import Q
 from .form import CommentAdded , ReplayAdded , AddToBuyPage
-
 from .models import Product , Comments , Order
 # Create your views here.
 def index(request) :
+    return render(request , "shopping/index.html")
+
+def product_list(request) :
     product = Product.objects.order_by("likes")
     context = {"product" : product}
-    return render(request , "shopping/index.html" , context)
-
+    return render(request , "shopping/product_list.html" , context)
+    
 def comments(request , product_id) :
     product = Product.objects.get(id = product_id)
     comments = product.comments_set.order_by("date_added")
@@ -70,5 +72,8 @@ def buy_page(request) :
 
 def buy_list(request) :
     order = Order.objects.filter(user = request.user ,count__gt = 0)
-    context = {"order" : order}
+    totall_price = 0
+    for pro in order :
+        totall_price += pro.count * pro.product.price
+    context = {"order" : order , "totall_price" : totall_price}
     return render(request , "shopping/buy_list.html" , context)

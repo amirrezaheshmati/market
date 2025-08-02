@@ -1,11 +1,12 @@
 {% extends "shopping/base.html" %}
 {% block content %}
+{% load humanize %}
 <ul>
     {% for ord in order %}
     <li>
         <img src="{{ord.product.picture.url}}" alt="img" style="width: 10rem;">
         <p>{{ord.product.name}}</p>
-        <p>{{ord.product.price}}</p>
+        <p>{{ord.product.price|intcomma}}</p>
         <p>{{ord.count}}</p>
         <p><a href="{% url 'shopping:product_describe' ord.product.id %}">descibe and Buy</a></p>
     </li>
@@ -13,5 +14,6 @@
     <p>nothing</p>
     {% endfor %}
 </ul>
-<p><a href="{% url 'users:profill' %}">Buy</a></p>
+<p>Total price : {{totall_price|intcomma}}</p>
+<p><a href="{% url 'users:profill' totall_price %}">Buy</a></p>
 {% endblock content %}
