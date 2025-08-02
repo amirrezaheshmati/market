@@ -2,6 +2,7 @@ from django.shortcuts import render , redirect
 from django.db.models import Q
 from .form import CommentAdded , ReplayAdded , AddToBuyPage
 from .models import Product , Comments , Order
+from random import choice
 # Create your views here.
 def index(request) :
     return render(request , "shopping/index.html")
@@ -74,6 +75,26 @@ def buy_list(request) :
     order = Order.objects.filter(user = request.user ,count__gt = 0)
     totall_price = 0
     for pro in order :
+        pro.level1 = True
         totall_price += pro.count * pro.product.price
+        pro.save()
     context = {"order" : order , "totall_price" : totall_price}
     return render(request , "shopping/buy_list.html" , context)
+
+def buy_action(request) :
+    numbers = list(n for n in range(10))
+    order = Order.objects.filter(user = request.user , level2 = True)
+    revieve_code = ""
+    for x in range(8) :
+        num = choice(numbers)
+        revieve_code += str(num)
+    for pro in order :
+        if pro.recieve_code == 0 :
+            pro.recieve_code = revieve_code
+            pro.save()
+    context = {"order" : order}
+    return render(request , "shopping/buy_action.html" , context)
+
+def buy_history(request) :
+    order = Order.objects.filter(user = request.user , level = 3)
+    context = {"order" : order}

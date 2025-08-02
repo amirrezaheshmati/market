@@ -9,6 +9,7 @@
         <p>{{ord.product.price|intcomma}}</p>
         <p>{{ord.count}}</p>
         <p><a href="{% url 'shopping:product_describe' ord.product.id %}">descibe and Buy</a></p>
+        <p>{{ord.level1}} ,{{ord.level2}},{{ord.level3}} </p>
     </li>
     {% empty %}
     <p>nothing</p>

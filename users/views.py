@@ -3,6 +3,7 @@ from django.contrib.auth import login
 from django.contrib.auth.forms import UserCreationForm
 from .form import Profill
 from .models import Acount
+from shopping.models import Order
 # Create your views here.
 def register(request) :
     if request.method != "POST" :
@@ -18,6 +19,13 @@ def register(request) :
     return render(request ,"registration/register.html" , context)
 
 def fill_profill(request , totall_price) :
+    order = Order.objects.filter(user = request.user ,level1 = True)
+    for pro in order :
+        pro.count_history = pro.count
+        pro.count = 0
+        pro.level2 = True
+        pro.level1 = False
+        pro.save()
     try :
         acount = Acount.objects.get(user = request.user)
     except Acount.DoesNotExist :

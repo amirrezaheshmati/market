@@ -15,6 +15,11 @@ class Order(models.Model) :
     product = models.ForeignKey(Product , on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
     count = models.PositiveSmallIntegerField(default=0)
+    recieve_code = models.BigIntegerField(default=0)
+    count_history = models.PositiveSmallIntegerField(default=0)
+    level1 = models.BooleanField(default=False)
+    level2 = models.BooleanField(default=False)
+    level3 = models.BooleanField(default=False)
 
 class Comments(models.Model) :
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
