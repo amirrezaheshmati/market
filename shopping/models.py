@@ -4,17 +4,39 @@ from django.contrib.auth.models import User
 class Product(models.Model) :
     name = models.CharField(max_length=20)
     price = models.BigIntegerField()
-    picture = models.ImageField()
-    likes = models.ManyToManyField(User , blank=True , related_name="like")
+    picture_red = models.ImageField()
+    picture_green = models.ImageField()
+    picture_blue = models.ImageField()
+    picture_black = models.ImageField()
+    picture_white = models.ImageField()
+    picture_brown = models.ImageField()
+    picture_silver = models.ImageField()
+    col = "red"
     
     def __str__(self):
         return self.name
-
+    
+class SizeChoice(models.TextChoices) :
+    FULL = "100%" , "100%"
+    HALF = "50%" , "50%"
+    QUARTER = "25%" , "25%"
+    
+class ColorChoice(models.TextChoices) :
+    RED = "red" , "red"
+    GREEN = "green" , "green"
+    BLUE = "blue" , "blue"
+    BLACK = "black" , "black"
+    WHITE = "white" , "white"
+    BROWN = "brown" , "brown"
+    SILVER = "silver" , "silver"
+    
 class Order(models.Model) :
-    user = models.ForeignKey(User, on_delete=models.CASCADE , related_name="user")
-    product = models.ForeignKey(Product , on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product , on_delete=models.CASCADE , related_name="prod")
     date_added = models.DateTimeField(auto_now_add=True)
     count = models.PositiveSmallIntegerField(default=0)
+    size = models.CharField(choices=SizeChoice.choices , default=SizeChoice.FULL)
+    color = models.CharField(choices=ColorChoice.choices , default=ColorChoice.BROWN)
     recieve_code = models.BigIntegerField(default=0)
     count_history = models.PositiveSmallIntegerField(default=0)
     level1 = models.BooleanField(default=False)
@@ -23,6 +45,7 @@ class Order(models.Model) :
     shows = models.SmallIntegerField(default=0)
     date_added = models.CharField()
     date_deleted = models.CharField()
+    likes = models.ManyToManyField(User , blank=True , related_name="like")
     
 class Comments(models.Model) :
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

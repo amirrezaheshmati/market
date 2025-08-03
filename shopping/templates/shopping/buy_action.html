@@ -3,7 +3,21 @@
 <ul>
     {% for ord in order %}
     <li>
-        <img src="{{ord.product.picture.url}}" alt="img" style="width: 10rem;">
+        {% if ord.color == "red" %}
+        <img src="{{ord.product.picture_red.url}}" alt="img" , style="width: 10rem;">
+        {% elif ord.color == "green"  %}
+        <img src="{{ord.product.picture_green.url}}" alt="img" , style="width: 10rem;">
+        {% elif ord.color == "blue" %}
+        <img src="{{ord.product.picture_blue.url}}" alt="img" , style="width: 10rem;">
+        {% elif ord.color == "brown" %}
+        <img src="{{ord.product.picture_brown.url}}" alt="img" , style="width: 10rem;">
+        {% elif ord.color == "black" %}
+        <img src="{{ord.product.picture_black.url}}" alt="img" , style="width: 10rem;">
+        {% elif ord.color == "white" %}
+        <img src="{{ord.product.picture_white.url}}" alt="img" , style="width: 10rem;">
+        {% elif ord.color == "silver" %}
+        <img src="{{ord.product.picture_silver.url}}" alt="img" , style="width: 10rem;">
+        {% endif %}
         <p>{{ord.product.name}}</p>
         <p>{{ord.product.price}}</p>
         <p>{{ord.count_history}}</p>

@@ -11,10 +11,29 @@ def index(request) :
     return render(request , "shopping/index.html")
 
 def product_list(request) :
-    product = Product.objects.order_by("likes")
+    product = Product.objects.all()
     context = {"product" : product}
     return render(request , "shopping/product_list.html" , context)
     
+def product_describe(request , product_id) :
+    product = Product.objects.get(id = product_id)
+    try :
+        order = Order.objects.get(user = request.user,
+                                  product = product)
+    except Order.DoesNotExist :
+        order = Order(user = request.user , 
+                      product = product)
+    if request.method != "POST" :
+        form = AddToBuyPage(instance=order)
+    else :
+        form = AddToBuyPage(instance=order, data=request.POST)
+        if form.is_valid() :
+            form.save()
+            return redirect("shopping:product_describe" , product_id = product_id)
+
+    context = {"form" : form , "product" : product , "pro_ord" : order}
+    return render(request , "shopping/product_describe.html" , context)
+
 def comments(request , product_id) :
     product = Product.objects.get(id = product_id)
     comments = product.comments_set.order_by("date_added")
@@ -52,24 +71,6 @@ def add_replay(request , comment_id , product_id) :
     context = {"form" : form , "comment" : comment , "product" : product}
     return render(request , "shopping/add_replay.html" , context)
 
-def product_describe(request , product_id) :
-    product = Product.objects.get(id = product_id)
-    try :
-        order = Order.objects.get(user = request.user,
-                                  product = product)
-    except Order.DoesNotExist :
-        order = Order(user = request.user , 
-                      product = product)
-    if request.method != "POST" :
-        form = AddToBuyPage(instance=order)
-    else :
-        form = AddToBuyPage(instance=order, data=request.POST)
-        if form.is_valid() :
-            form.save()
-            return redirect("shopping:buy_page")
-
-    context = {"form" : form , "product" : product}
-    return render(request , "shopping/product_describe.html" , context)
 
 def buy_page(request) :
     return render(request , "shopping/buy_page.html")

@@ -4,8 +4,8 @@ from .models import Comments , Replay , Order , Product
 class AddToBuyPage(forms.ModelForm) :
     class Meta :
         model = Order
-        fields = ["count"]
-        labels = {"count" : "count"}
+        fields = ["count" , "size" , "color"]
+        labels = {"count" : "count" , "size" : "size" , "color" : "color"}
 
 class CommentAdded(forms.ModelForm) :
     class Meta :
@@ -22,5 +22,8 @@ class ReplayAdded(forms.ModelForm) :
 class AddProduct(forms.ModelForm) :
     class Meta :
         model = Product
-        fields = ["name" , "picture" , "price"]
-        labels = {"name" : "name" , "picture" : "picture" , "price" : "price"}
+        fields = ["name" , "picture_red" , "picture_green" , "picture_blue" , "picture_brown" ,
+                  "picture_black" , "picture_white" , "picture_silver" , "price"]
+        labels = {"name" : "name" , "picture_red" : "picture red" ,"picture_green" : "picture green",
+                  "picture_blue" : "picture blue" ,"picture_brown" : "picture brown" ,"picture_silver" : "picture silver" , 
+                  "picture_black" : "picture black" , "picture_white" :"picture white", "price" : "price"}

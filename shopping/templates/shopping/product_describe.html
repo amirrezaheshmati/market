@@ -1,6 +1,20 @@
 {% extends "shopping/base.html" %}
 {% block content %}
-<img src="{{product.picture.url}}" alt="img" style="width: 10rem;">
+{% if pro_ord.color == "red" %}
+        <img src="{{product.picture_red.url}}" alt="img" , style="width: 10rem;">
+        {% elif pro_ord.color == "green"  %}
+        <img src="{{product.picture_green.url}}" alt="img" , style="width: 10rem;">
+        {% elif pro_ord.color == "blue" %}
+        <img src="{{product.picture_blue.url}}" alt="img" , style="width: 10rem;">
+        {% elif pro_ord.color == "brown" %}
+        <img src="{{product.picture_brown.url}}" alt="img" , style="width: 10rem;">
+        {% elif pro_ord.color == "black" %}
+        <img src="{{product.picture_black.url}}" alt="img" , style="width: 10rem;">
+        {% elif pro_ord.color == "white" %}
+        <img src="{{product.picture_white.url}}" alt="img" , style="width: 10rem;">
+        {% elif pro_ord.color == "silver" %}
+        <img src="{{product.picture_silver.url}}" alt="img" , style="width: 10rem;">
+        {% endif %}
 <p>name : {{product.name}}</p>
 <p>price : {{product.price}}</p>
 <form action="{% url 'shopping:product_describe' product.id %}" method="post">

@@ -6,7 +6,7 @@
 <ul>
     {% for pro in product %}
     <li>
-        <img src="{{pro.picture.url}}" alt="img" , style="width: 10rem;">
+        <img src="{{pro.picture_brown.url}}" alt="img" , style="width: 10rem;">
         <p>{{pro.name}}</p>
         <p>{{pro.price}}</p>
         <form action="{% url 'shopping:like_post' pro.id %}" method="post">
