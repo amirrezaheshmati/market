@@ -1,4 +1,13 @@
-<p>
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gognoos</title>
+  </head>
+  <body>
+    <p>
     {% if user.is_authenticated %}
     Hello ,{{user.username}}. - 
     {% endif %}
@@ -6,10 +15,12 @@
     <a href="{% url 'shopping:product_list' %}">Products</a> - 
     {% if user.is_superuser %}
     <a href="{% url 'shopping:admin_panel' %}">Admin panel</a> - 
+    <a href="{% url 'shopping:list_chat_admin' %}">Supporting</a>
     {% endif %}
     {% if user.is_authenticated %}
     {% if not user.is_superuser %}
     <a href="{% url 'shopping:buy_page' %}">Buy page</a> - 
+    <a href="{% url 'shopping:supporting_page' %}">Supporting page</a>
     {% endif %}
     <form action="{% url 'users:logout' %}" method="post">
         {% csrf_token %}
@@ -21,3 +32,7 @@
     {% endif %}
 </p>
 {% block content %}{% endblock content %}
+  </body>
+</html>
+
+

@@ -1,7 +1,7 @@
 from django.shortcuts import render ,get_object_or_404, redirect
 from django.db.models import Q
-from .form import CommentAdded , ReplayAdded , AddToBuyPage , AddProduct
-from .models import Product , Comments , Order 
+from .form import CommentAdded , ReplayAdded , AddToBuyPage , AddProduct  , Chats
+from .models import Product , Comments , Order , Chat , ChatUser , User
 from random import choice
 import jdatetime
 from users.models import Acount
@@ -171,5 +171,57 @@ def like_comment(request , comment_id , product_id) :
         like.likes.remove(request.user)
     else :
         like.likes.add(request.user)
-        
+
     return redirect("shopping:comments" , product_id = product_id)
+
+def supporting_page(request) :
+    return render(request , "shopping/supporting_page.html")
+
+def chat_user_page(request) :
+    admin = User.objects.get(is_superuser = True)
+    if request.method != "POST" :
+        form = Chats()
+    else :
+        form = Chats(data=request.POST) 
+        if form.is_valid() :
+            new_text = form.save(commit=False)
+            new_text.sender = request.user
+            new_text.receiver = admin
+            form.save()
+            return redirect("shopping:chat_page")
+        
+    chats = Chat.objects.filter(sender = request.user , receiver = admin) | Chat.objects.filter(sender = admin , receiver = request.user)
+    chats = chats.order_by("date_added")
+    for chat in chats :
+        if chat.receiver == request.user :
+            chat.user_read = True
+            chat.save()
+    context = {"chats" : chats , "form" : form}
+    return render(request , "shopping/chat_page.html" , context)
+
+def list_chat_admin(request) :
+    users = User.objects.exclude(is_superuser = True)
+    context = {"users" : users }
+    return render(request , "shopping/list_chat_admin.html" , context)
+
+def chat_admin_page(request , user_id) :
+    user = User.objects.get(id = user_id)
+    if request.method != "POST" :
+        form = Chats()
+    else :
+        form = Chats(data=request.POST)
+        if form.is_valid() :
+            new_text = form.save(commit=False)
+            new_text.sender = request.user
+            new_text.receiver = user
+            form.save()
+            return redirect("shopping:chat_admin_page" , user_id = user_id)
+    
+    chats = Chat.objects.filter(sender = request.user , receiver = user) | Chat.objects.filter(sender = user , receiver = request.user)
+    chats = chats.order_by("date_added")
+    for chat in chats :
+        if chat.receiver == request.user :
+            chat.admin_read = True
+            chat.save()
+    context = {"chats" : chats , "form" : form , "userr" : user}
+    return render(request , "shopping/chat_admin_page.html" , context)

@@ -1,0 +1,12 @@
+{% extends "shopping/base.html" %}
+{% block content %}
+<ul>
+    {% for userr in users %}
+    <li>
+        <a href="{% url 'shopping:chat_admin_page' userr.id %}"><p>{{userr.username}}</p></a>
+    </li>
+    {% empty %}
+    <p>nothing</p>
+    {% endfor %}
+</ul>
+{% endblock content %}

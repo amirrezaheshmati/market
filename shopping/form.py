@@ -1,5 +1,5 @@
 from  django import forms
-from .models import Comments , Replay , Order , Product
+from .models import Comments , Replay , Order , Product , Chat
 
 class AddToBuyPage(forms.ModelForm) :
     class Meta :
@@ -27,3 +27,9 @@ class AddProduct(forms.ModelForm) :
         labels = {"name" : "name" , "picture_red" : "picture red" ,"picture_green" : "picture green",
                   "picture_blue" : "picture blue" ,"picture_brown" : "picture brown" ,"picture_silver" : "picture silver" , 
                   "picture_black" : "picture black" , "picture_white" :"picture white", "price" : "price"}
+
+class Chats(forms.ModelForm) :
+    class Meta :
+        model = Chat
+        fields = ["text"]
+        labels = {"text" : "massage"}

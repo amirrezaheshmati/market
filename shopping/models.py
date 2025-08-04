@@ -65,3 +65,17 @@ class Replay(models.Model) :
     
     def __str__(self):
         return f"{self.text[:50]}..."
+    
+class ChatUser(models.Model) :
+    user = models.OneToOneField(User , on_delete=models.CASCADE)
+    
+class Chat(models.Model) :
+    sender = models.ForeignKey(User , on_delete=models.CASCADE , related_name="sender")
+    receiver = models.ForeignKey(User , on_delete=models.CASCADE , related_name="receiver")
+    text = models.TextField()
+    date_added = models.DateTimeField(auto_now_add=True)
+    admin_read = models.BooleanField(default=False)
+    user_read = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.text
