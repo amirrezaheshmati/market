@@ -18,21 +18,20 @@
         {% elif pro.color == "silver" %}
         <img src="{{pro.product.picture_silver.url}}" alt="img" , style="width: 10rem;">
         {% endif %}
-        <p>{{pro.date_added}}</p>
         <p>{{pro.product.name}}</p>
-        <p>{{pro.product.price}}</p>
-        <p>{{pro.count}}</p>
-        <p>{{pro.recieve_code}}</p>
+        <p>price : {{pro.product.price}}</p>
+        <p>count : {{pro.count}}</p>
+        <p>recieve code : {{pro.recieve_code}}</p>
+        <p>add date : {{pro.date_added}}</p>
         {% for ac in acount %}
         {% if ac.user == pro.user %}
-        <p>{{ac.name}}</p>
-        <p>{{ac.number_phone1}}</p>
-        <p>{{ac.number_phone2}}</p>
-        <p>{{ac.post_code}}</p>
-        <p>{{ac.addres}}</p>
+        <p>user name : {{ac.name}}</p>
+        <p>number phone 1 : {{ac.number_phone1}}</p>
+        <p>number phone 2 :{{ac.number_phone2}}</p>
+        <p>post code : {{ac.post_code}}</p>
+        <p>addres : {{ac.addres}}</p>
         {% endif %}
         {% endfor %}
-        <p>{{pro.shows}}</p>
         {% if pro.shows != 3 %}
         <p><a href="{% url 'shopping:delete' pro.id %}">Delete</a></p>
         {% elif not pro.level3 %}

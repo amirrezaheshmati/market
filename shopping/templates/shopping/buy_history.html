@@ -18,11 +18,11 @@
         {% elif pro.color == "silver" %}
         <img src="{{pro.product.picture_silver.url}}" alt="img" , style="width: 10rem;">
         {% endif %}
-        <p>{{pro.date_deleted}}</p>
         <p>{{pro.product.name}}</p>
-        <p>{{pro.product.price}}</p>
-        <p>{{pro.count_history}}</p>
-        <p>{{pro.recieve_code}}</p>
+        <p>proce : {{pro.product.price}}</p>
+        <p>count : {{pro.count_history}}</p>
+        <p>recieve code : {{pro.recieve_code}}</p>
+        <p>send date : {{pro.date_deleted}}</p>
     </li>
     {% empty %}
     <p>nothing</p>

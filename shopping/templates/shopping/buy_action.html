@@ -19,9 +19,9 @@
         <img src="{{ord.product.picture_silver.url}}" alt="img" , style="width: 10rem;">
         {% endif %}
         <p>{{ord.product.name}}</p>
-        <p>{{ord.product.price}}</p>
-        <p>{{ord.count_history}}</p>
-        <p>{{ord.recieve_code}}</p>
+        <p>price : {{ord.product.price}}</p>
+        <p>count : {{ord.count_history}}</p>
+        <p>recieve code{{ord.recieve_code}}</p>
         {% if ord.shows == 3 %}
         <p><a href="{% url 'shopping:delete_user' ord.id %}">Delete</a></p>
         {% elif not ord.level3 %}

@@ -11,7 +11,7 @@ class Product(models.Model) :
     picture_white = models.ImageField()
     picture_brown = models.ImageField()
     picture_silver = models.ImageField()
-    col = "red"
+    likes = models.ManyToManyField(User , blank=True , related_name="like")
     
     def __str__(self):
         return self.name
@@ -45,18 +45,19 @@ class Order(models.Model) :
     shows = models.SmallIntegerField(default=0)
     date_added = models.CharField()
     date_deleted = models.CharField()
-    likes = models.ManyToManyField(User , blank=True , related_name="like")
     
 class Comments(models.Model) :
+    user = models.ForeignKey(User , on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     text = models.TextField()
-    likes = models.IntegerField(default=0)
+    likes = models.ManyToManyField(User , blank=True , related_name="like_commnet")
     date_added = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return f"{self.text[:50]}..."
 
 class Replay(models.Model) :
+    user = models.ForeignKey(User , on_delete=models.CASCADE)
     comment = models.ForeignKey(Comments , on_delete=models.CASCADE , related_name="replay")
     text = models.TextField()
     likes = models.IntegerField(default=0 )

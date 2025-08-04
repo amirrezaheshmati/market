@@ -48,6 +48,7 @@ def add_comment(request , product_id) :
         form = CommentAdded(data=request.POST)
         if form.is_valid() :
             new_comment = form.save(commit=False)
+            new_comment.user = request.user
             new_comment.product = product
             new_comment.save()
             return redirect("shopping:comments" , product_id = product_id)
@@ -65,6 +66,7 @@ def add_replay(request , comment_id , product_id) :
         if form.is_valid() :
             new_replay = form.save(commit=False)
             new_replay.comment = comment
+            new_replay.user = request.user
             new_replay.save()
             return redirect("shopping:comments" ,product_id = product_id )
     
@@ -161,3 +163,13 @@ def like_post(request, post_id) :
         like.likes.add(request.user)
         
     return redirect("shopping:product_list")
+
+def like_comment(request , comment_id , product_id) :
+    like = get_object_or_404(Comments , id = comment_id)
+    product = get_object_or_404(Product , id = product_id)
+    if request.user in like.likes.all() :
+        like.likes.remove(request.user)
+    else :
+        like.likes.add(request.user)
+        
+    return redirect("shopping:comments" , product_id = product_id)

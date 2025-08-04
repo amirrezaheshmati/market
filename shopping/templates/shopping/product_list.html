@@ -9,13 +9,15 @@
         <img src="{{pro.picture_brown.url}}" alt="img" , style="width: 10rem;">
         <p>{{pro.name}}</p>
         <p>{{pro.price}}</p>
+        <p>like : {{pro.likes.count}}</p>
+        {% if user.is_authenticated %}
         <form action="{% url 'shopping:like_post' pro.id %}" method="post">
             {% csrf_token %}
             <button type="submit">
-                <p>{{pro.likes.count}} Like</p>
+                <p>Like</p>
             </button>
         </form>
-        
+        {% endif %}
         <p><a href="{% url 'shopping:comments' pro.id %}">comments</a></p>
         {% if user.is_authenticated %}
         <p><a href="{% url 'shopping:product_describe' pro.id %}">descibe and Buy</a></p>

@@ -21,4 +21,5 @@ urlpatterns = [
     path("admin_action/<int:product_id>/" , views.delete_admin_product , name="delete"),
     path("admin_history/" , views.admin_history , name="admin_history"), 
     path("like_post/<int:post_id>/" , views.like_post , name="like_post"),
+    path("like_comment/<int:comment_id>/<int:product_id>/" , views.like_comment , name="like_comment")
 ]

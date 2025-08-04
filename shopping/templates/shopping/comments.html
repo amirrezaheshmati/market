@@ -1,15 +1,30 @@
 {% extends "shopping/base.html" %}
 {% block content %}
 <p>{{product.name}}:</p>
+{% if user.is_authenticated %}
 <p><a href="{% url 'shopping:add_comment' product.id %}">Add comment</a></p>
+{% else %}
+<p><a href="{% url 'users:login' %}">Add comment</a></p>
+{% endif %}
 <ul>
     {% for com in comments %}
     <li>
+        <p>{{com.user.username}}</p>
+        {% if user.is_authenticated %}
         <p>{{com.text}} - <a href="{% url 'shopping:add_replay' product.id com.id %}">Replay</a></p>
-        <p>{{com.likes}}</p>
+        {% endif %}
+        <p>Like : {{com.likes.count}}</p>
+        {% if user.is_authenticated %}
+        <form action="{% url 'shopping:like_comment' com.id product.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit">
+                <p>Like</p>
+            </button>
+        </form>
+        {% endif %}
+        <p>replay :</p>
         {% for rep in com.replay.all %}
-        <p>reply : {{rep.text}}</p>
-        <p>likes : {{rep.likes}}</p>
+        <p>{{rep.user.username}} : {{rep.text}}</p>
         {% endfor %}
     </li>
     {% empty %}

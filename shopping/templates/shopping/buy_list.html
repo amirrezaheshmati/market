@@ -20,13 +20,9 @@
         <img src="{{ord.product.picture_silver.url}}" alt="img" , style="width: 10rem;">
         {% endif %}
         <p>{{ord.product.name}}</p>
-        <p>{{ord.product.price|intcomma}}</p>
-        <p>{{ord.count}}</p>
+        <p>price :{{ord.product.price|intcomma}}</p>
+        <p>count : {{ord.count}}</p>
         <p><a href="{% url 'shopping:product_describe' ord.product.id %}">descibe and Buy</a></p>
-        <p>{{ord.level1}} ,{{ord.level2}},{{ord.level3}} </p>
-        {% if ord.shows == 2 %}
-        <p><a href=""></a></p>
-        {% endif %}
     </li>
     {% empty %}
     <p>nothing</p>
