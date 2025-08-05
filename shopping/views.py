@@ -1,5 +1,5 @@
 from django.shortcuts import render ,get_object_or_404, redirect
-from django.db.models import Q
+from django.db.models import Q , Count
 from .form import CommentAdded , ReplayAdded , AddToBuyPage , AddProduct  , Chats
 from .models import Product , Comments , Order , Chat , ChatUser , User
 from random import choice
@@ -201,6 +201,10 @@ def chat_user_page(request) :
 
 def list_chat_admin(request) :
     users = User.objects.exclude(is_superuser = True)
+    users = users.annotate(unread_count = Count("sender" ,
+    filter=Q(sender__receiver=request.user,
+    sender__admin_read = False))).order_by("-unread_count")
+    
     context = {"users" : users }
     return render(request , "shopping/list_chat_admin.html" , context)
 

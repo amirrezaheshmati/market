@@ -4,6 +4,9 @@
     {% for userr in users %}
     <li>
         <a href="{% url 'shopping:chat_admin_page' userr.id %}"><p>{{userr.username}}</p></a>
+        {% if userr.unread_count > 0 %}
+        <span>$</span>
+        {% endif %}
     </li>
     {% empty %}
     <p>nothing</p>
