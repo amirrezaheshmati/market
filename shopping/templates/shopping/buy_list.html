@@ -1,33 +1,71 @@
 {% extends "shopping/base.html" %}
 {% block content %}
 {% load humanize %}
-<ul>
-    {% for ord in order %}
-    <li>
-        {% if ord.color == "red" %}
-        <img src="{{ord.product.picture_red.url}}" alt="img" , style="width: 10rem;">
-        {% elif ord.color == "green"  %}
-        <img src="{{ord.product.picture_green.url}}" alt="img" , style="width: 10rem;">
-        {% elif ord.color == "blue" %}
-        <img src="{{ord.product.picture_blue.url}}" alt="img" , style="width: 10rem;">
-        {% elif ord.color == "brown" %}
-        <img src="{{ord.product.picture_brown.url}}" alt="img" , style="width: 10rem;">
-        {% elif ord.color == "black" %}
-        <img src="{{ord.product.picture_black.url}}" alt="img" , style="width: 10rem;">
-        {% elif ord.color == "white" %}
-        <img src="{{ord.product.picture_white.url}}" alt="img" , style="width: 10rem;">
-        {% elif ord.color == "silver" %}
-        <img src="{{ord.product.picture_silver.url}}" alt="img" , style="width: 10rem;">
-        {% endif %}
-        <p>{{ord.product.name}}</p>
-        <p>price :{{ord.product.price|intcomma}}</p>
-        <p>count : {{ord.count}}</p>
-        <p><a href="{% url 'shopping:product_describe' ord.product.id %}">descibe and Buy</a></p>
+{% load bootstrap4 %}
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gognoos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% block page_header %}
+    <div class="jumbotron" style="background-color: #d7bc97; margin-left: 3vw;
+     margin-right: 3vw; justify-content: center; flex-wrap: wrap; display: flex; ">
+    <form action="{% url 'shopping:buy_action' %}" method="post" style="display: flex;">
+        {% csrf_token %}
+        {% buttons %}
+        <button class="btn btn-success" style="margin-left: 8vw; margin-right: 8vw; width: 20vw; min-width: 100px;"><p style="color: white; margin-top: 10px; font-size: 14px;">Buy Action</p></button>
+        {% endbuttons %}
+    </form>
+    <form action="{% url 'shopping:buy_history' %}" method="post" style="display: flex;">
+        {% csrf_token %}
+        {% buttons %}
+        <button class="btn btn-success" style="margin-left: 8vw; margin-right: 8vw; width: 20vw;min-width: 100px;"><p style="color: white; margin-top: 10px; font-size: 14px;">Buy History</p></button>
+        {% endbuttons %}
+    </form>
+</div>
+{% endblock page_header %}
+<div style="margin-left: 40px;">
+<p class="display-6">Total price : {{totall_price|intcomma}}</p>
+<form action="{% url 'users:profill' totall_price %}">
+    {% csrf_token %}
+    {% buttons %}
+    <button class="btn btn-success" style="width: 80px; height: 35px;"><p style="color: white; font-size: 14px;">Buy</p></button>
+    {% endbuttons %}
+</form>
+</div>
+<hr style="border: none; border-top: 1px solid black; margin: 20px 5;">
+<ul style="flex-wrap: wrap; display: flex; justify-content: center;">
+    {% for pro in order %}
+    <li class="text-decoration-none d-block " style="margin-left: 1vw; margin-right: 3vw; margin-top: 30px;">
+        <div class="card" style="max-width: 18rem; width: 70vw; margin-right: 2vw; ">
+            <img src="{{pro.product.picture.url}}" class="card-img-top" alt="img">
+            <div class="card-body">
+                <h5 class="card-title">{{pro.product.name}}</h5>
+                <p class="card-text">{{pro.product.price|intcomma}}</p>
+                <p class="card-text">{{pro.count}}</p>
+                <div style="display: flex;">
+                    <div>
+                        <a href="{% url 'shopping:product_describe' pro.product.id %}" style="text-decoration: none; color: #7ebe77;"><h6>Edit   
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#7ebe77" class="bi bi-pen-fill" viewBox="0 0 16 16">
+                          <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001"/>
+                        </svg>
+                        <i class="bi bi-pen-fill"></i></h6></a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </li>
     {% empty %}
-    <p>nothing</p>
+    <p class="display-6">Nothing</p>
     {% endfor %}
 </ul>
-<p>Total price : {{totall_price|intcomma}}</p>
-<p><a href="{% url 'users:profill' totall_price %}">Buy</a></p>
+</body>
+
 {% endblock content %}

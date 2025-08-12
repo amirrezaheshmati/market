@@ -6,13 +6,16 @@ from random import choice
 import jdatetime
 from users.models import Acount
 from django.contrib.auth.decorators import user_passes_test
+from django.core.paginator import Paginator
 # Create your views here.
-def index(request) :
-    return render(request , "shopping/index.html")
 
 def product_list(request) :
     product = Product.objects.all()
-    context = {"product" : product}
+    paginator = Paginator(product, 12)  # 12 محصول در هر صفحه
+
+    page_number = request.GET.get('page')  # شماره صفحه از URL
+    page_obj = paginator.get_page(page_number)
+    context = {"product" : page_obj }
     return render(request , "shopping/product_list.html" , context)
     
 def product_describe(request , product_id) :
@@ -30,7 +33,6 @@ def product_describe(request , product_id) :
         if form.is_valid() :
             form.save()
             return redirect("shopping:product_describe" , product_id = product_id)
-
     context = {"form" : form , "product" : product , "pro_ord" : order}
     return render(request , "shopping/product_describe.html" , context)
 
@@ -73,10 +75,6 @@ def add_replay(request , comment_id , product_id) :
     context = {"form" : form , "comment" : comment , "product" : product}
     return render(request , "shopping/add_replay.html" , context)
 
-
-def buy_page(request) :
-    return render(request , "shopping/buy_page.html")
-
 def buy_list(request) :
     order = Order.objects.filter(user = request.user ,count__gt = 0)
     totall_price = 0
@@ -111,7 +109,7 @@ def delete_user(request , product_id) :
         order.shows = 3
         order.date_deleted= f"{jdatetime.datetime.now().strftime("%Y/%m/%d : %H")}"
         order.save()
-        return redirect("shopping:buy_page")
+        return redirect("shopping:buy_action")
 
 def buy_history(request) :
     order = Order.objects.order_by("-date_deleted").filter(user = request.user , level3 = True)
@@ -153,7 +151,7 @@ def delete_admin_product(request , product_id) :
         order.level2 = True
         order.shows = 3
         order.save()
-    return render(request , "shopping/index.html")
+    return redirect("shopping:admin_action")
 
 def like_post(request, post_id) :
     like = get_object_or_404(Product , id = post_id)
@@ -161,7 +159,6 @@ def like_post(request, post_id) :
         like.likes.remove(request.user)
     else :
         like.likes.add(request.user)
-        
     return redirect("shopping:product_list")
 
 def like_comment(request , comment_id , product_id) :
@@ -191,7 +188,7 @@ def chat_user_page(request) :
             return redirect("shopping:chat_page")
         
     chats = Chat.objects.filter(sender = request.user , receiver = admin) | Chat.objects.filter(sender = admin , receiver = request.user)
-    chats = chats.order_by("date_added")
+    chats = chats.order_by("-date_added")
     for chat in chats :
         if chat.receiver == request.user :
             chat.user_read = True
@@ -222,7 +219,7 @@ def chat_admin_page(request , user_id) :
             return redirect("shopping:chat_admin_page" , user_id = user_id)
     
     chats = Chat.objects.filter(sender = request.user , receiver = user) | Chat.objects.filter(sender = user , receiver = request.user)
-    chats = chats.order_by("date_added")
+    chats = chats.order_by("-date_added")
     for chat in chats :
         if chat.receiver == request.user :
             chat.admin_read = True

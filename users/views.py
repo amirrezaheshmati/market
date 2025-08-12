@@ -13,19 +13,13 @@ def register(request) :
         if form.is_valid() :
             new_user = form.save()
             login(request ,new_user)
-            return redirect("shopping:index")
+            return redirect("shopping:product_list")
         
     context ={"form" : form}
     return render(request ,"registration/register.html" , context)
 
 def fill_profill(request , totall_price) :
     order = Order.objects.filter(user = request.user ,level1 = True)
-    for pro in order :
-        pro.count_history = pro.count
-        pro.count = 0
-        pro.level2 = True
-        pro.level1 = False
-        pro.save()
     try :
         acount = Acount.objects.get(user = request.user)
     except Acount.DoesNotExist :
@@ -35,6 +29,12 @@ def fill_profill(request , totall_price) :
     else :
         form = Profill(instance=acount , data=request.POST)
         if form.is_valid() :
+            for pro in order :
+                pro.count_history = pro.count
+                pro.count = 0
+                pro.level2 = True
+                pro.level1 = False
+                pro.save()
             form.save()
             return redirect(f"https://zarinp.al/python_developer?amount={totall_price}")
     

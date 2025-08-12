@@ -1,5 +1,6 @@
 from  django import forms
 from .models import Comments , Replay , Order , Product , Chat
+from PIL import Image
 
 class AddToBuyPage(forms.ModelForm) :
     class Meta :
@@ -22,14 +23,30 @@ class ReplayAdded(forms.ModelForm) :
 class AddProduct(forms.ModelForm) :
     class Meta :
         model = Product
-        fields = ["name" , "picture_red" , "picture_green" , "picture_blue" , "picture_brown" ,
-                  "picture_black" , "picture_white" , "picture_silver" , "price"]
-        labels = {"name" : "name" , "picture_red" : "picture red" ,"picture_green" : "picture green",
-                  "picture_blue" : "picture blue" ,"picture_brown" : "picture brown" ,"picture_silver" : "picture silver" , 
-                  "picture_black" : "picture black" , "picture_white" :"picture white", "price" : "price"}
+        fields = ["name"  , "price" , "picture"]
+        labels = {"name" : "name" , "picture" : "picture", "price" : "price"}
+        widgets = {"name" : forms.Textarea(attrs={'style': 'width:200px; height: 40px;'}),
+                "price" : forms.Textarea(attrs={'style': 'width:150px; height: 40px;'})}
+        
+    def clean_picture(self):
+        photo = self.cleaned_data.get('picture')
+
+        if photo:
+            img = Image.open(photo)
+            width, height = img.size
+            ratio = width / height
+
+            expected_ratio = 5 / 4  # نسبت مورد نظر
+
+            # کمی خطای کوچک مجاز (برای جلوگیری از مشکل اعشار)
+            if not (abs(ratio - expected_ratio) < 0.01):
+                raise forms.ValidationError("نسبت تصویر باید 5 به 4 باشد.")
+
+        return photo
 
 class Chats(forms.ModelForm) :
     class Meta :
         model = Chat
         fields = ["text"]
-        labels = {"text" : "massage"}
+        labels = {"text" : ""}
+        widgets = {"text" : forms.Textarea(attrs={'style': 'width:100%; height: 40px;'})}

@@ -4,13 +4,7 @@ from django.contrib.auth.models import User
 class Product(models.Model) :
     name = models.CharField(max_length=20)
     price = models.BigIntegerField()
-    picture_red = models.ImageField()
-    picture_green = models.ImageField()
-    picture_blue = models.ImageField()
-    picture_black = models.ImageField()
-    picture_white = models.ImageField()
-    picture_brown = models.ImageField()
-    picture_silver = models.ImageField()
+    picture = models.ImageField()
     likes = models.ManyToManyField(User , blank=True , related_name="like")
     
     def __str__(self):
