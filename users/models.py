@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 class Acount(models.Model) :
     user = models.ForeignKey(User , on_delete=models.CASCADE)
     name = models.CharField(max_length=30)
-    number_phone1 = models.BigIntegerField(max_length=11)
-    number_phone2 = models.BigIntegerField(max_length=11)
+    number_phone1 = models.BigIntegerField()
+    number_phone2 = models.BigIntegerField()
     post_code = models.BigIntegerField()
     addres = models.TextField()
     
