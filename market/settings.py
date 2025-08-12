@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-2x@^yc50cux5q*s+*8)gtg%tk=cly^z1t+)nz=rmfalo9!q^c^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["mahdiyemarket.pythonanywhere.com"]
+ALLOWED_HOSTS = ["mahdiyehghoghnoos.pythonanywhere.com"]
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "madia"

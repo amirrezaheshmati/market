@@ -10,11 +10,11 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/wsgi/
 import os
 import sys
 
-path = '/home/mahdiyemarket/market'
+path = '/home/mahdiyehghoghnoos/market'
 if path not in sys.path:
     sys.path.append(path)
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'projectname.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'market.settings'
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
