@@ -95,7 +95,7 @@ def buy_action(request) :
     for pro in order :
         if pro.recieve_code == 0 :
             pro.recieve_code = revieve_code
-            pro.date_added = f"{jdatetime.datetime.now().strftime("%Y/%m/%d : %H")}"
+            pro.date_added = f"{jdatetime.datetime.now().strftime('%Y/%m/%d : %H')}"
             pro.shows = 1
             pro.save()
     context = {"order" : order}
@@ -107,7 +107,7 @@ def delete_user(request , product_id) :
         order.level2 = False
         order.level3 = True
         order.shows = 3
-        order.date_deleted= f"{jdatetime.datetime.now().strftime("%Y/%m/%d : %H")}"
+        order.date_deleted= f"{jdatetime.datetime.now().strftime('%Y/%m/%d : %H')}"
         order.save()
         return redirect("shopping:buy_action")
 
