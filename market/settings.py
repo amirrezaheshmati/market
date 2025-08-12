@@ -35,6 +35,7 @@ MEDIA_ROOT = BASE_DIR / "madia"
 INSTALLED_APPS = [
     "shopping",
     "users",
+    
     "bootstrap4",
     'django.contrib.humanize',
     'django.contrib.admin',
